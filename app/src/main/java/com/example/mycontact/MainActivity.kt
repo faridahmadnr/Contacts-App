@@ -32,8 +32,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         contactViewAdapter = ContactViewAdapter(
-            onEdit = { }
-            onDelete = { }
+            onEdit = { contact -> showEditDialog(contact) },
+            onDelete = {contact -> showConfirmDelete(contact)}
         )
 
         with(binding) {
@@ -93,6 +93,66 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showEditDialog(contact: Contact){
+        var binding = FormContactBinding.inflate(layoutInflater)
 
+        // isi form dengan data existing contact
+        binding.edtName.setText(contact.name)
+        binding.edtPhone.setText(contact.phone)
+
+        var builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("Edit Contact")
+        builder.setView(binding.root)
+
+        builder.setPositiveButton("Save") { dialog, which ->
+            // ambil name dan phone dari form
+            var name = binding.edtName.text.toString().trim()
+            var phone = binding.edtPhone.text.toString().trim()
+
+            if (name.isNotEmpty() && phone.isNotEmpty()) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    // update ke dabase
+                    contactDao.update(contact.copy(name = name, phone = phone))
+
+                    // minta UI untuk refresh data
+                    withContext(Dispatchers.Main) { refreshList() }
+                }
+
+                dialog.dismiss()
+            } else {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Nama dan Phone harus diisi",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        builder.setNeutralButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // dialog di show
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun showConfirmDelete(contact: Contact) {
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("Delete ${contact.name}?")
+
+        builder.setPositiveButton("Delete") { dialog, which ->
+            lifecycleScope.launch(Dispatchers.IO) {
+                contactDao.delete(contact)
+                withContext(Dispatchers.Main) { refreshList() }
+            }
+            dialog.dismiss()
+        }
+
+        builder.setNeutralButton("Cancel") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val dialog = builder.create()
+        dialog.show()
     }
 }

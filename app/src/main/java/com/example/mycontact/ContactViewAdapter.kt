@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mycontact.data.Contact
 import com.example.mycontact.databinding.ItemContactBinding
 
-class ContactViewAdapter: RecyclerView.Adapter<ContactViewAdapter.ItemContactViewHolder>(
-
+class ContactViewAdapter(
+    private val onEdit: (Contact) -> Unit,
+    private val onDelete: (Contact) -> Unit
+): RecyclerView.Adapter<ContactViewAdapter.ItemContactViewHolder>(
 
 ) {
 
