@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MyContact (Kotlin) — Interactive Web Preview</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="title-group">
+        <h1>MYCONTACT</h1>
+        <span class="badge">Kotlin + Room → Interactive Web Preview</span>
+      </div>
+      <div class="actions">
+        <button id="resetBtn" class="btn" type="button">↺ Reset Demo Data</button>
+        <a class="btn btn-secondary" href="https://github.com/faridahmadnr/Contacts-App" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <div class="phone-frame" aria-label="Android Phone Preview">
+        <div class="phone-notch">
+          <span class="speaker"></span>
+          <span class="camera"></span>
+        </div>
+
+        <div class="phone-screen">
+          <!-- Login Screen -->
+          <div id="loginScreen" class="screen active">
+            <div class="auth-card">
+              <div class="app-logo">📇</div>
+              <h2>MyContact</h2>
+              <p class="subtitle">Sign in to manage your contacts</p>
+
+              <form id="loginForm" class="form">
+                <label class="field">
+                  <span>Username</span>
+                  <input id="loginUsername" type="text" placeholder="Enter username" autocomplete="username" />
+                </label>
+                <label class="field">
+                  <span>Password</span>
+                  <input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password" />
+                </label>
+                <button type="submit" class="btn-primary">LOGIN</button>
+              </form>
+
+              <button id="fillDemoBtn" type="button" class="btn-ghost">Use Demo Account (farid / 1234)</button>
+              <p class="switch-link">
+                Don't have an account? <button id="goRegisterBtn" type="button" class="link-btn">Register</button>
+              </p>
+            </div>
+          </div>
+
+          <!-- Register Screen -->
+          <div id="registerScreen" class="screen">
+            <div class="auth-card">
+              <div class="app-logo">📝</div>
+              <h2>Create Account</h2>
+              <p class="subtitle">Saved locally via SessionManager simulation</p>
+
+              <form id="registerForm" class="form">
+                <label class="field">
+                  <span>Username</span>
+                  <input id="regUsername" type="text" placeholder="Choose username" />
+                </label>
+                <label class="field">
+                  <span>Password</span>
+                  <input id="regPassword" type="password" placeholder="Min. 4 characters" />
+                </label>
+                <label class="field">
+                  <span>Confirm Password</span>
+                  <input id="regConfirmPassword" type="password" placeholder="Repeat password" />
+                </label>
+                <button type="submit" class="btn-primary">REGISTER</button>
+              </form>
+
+              <p class="switch-link">
+                Already have an account? <button id="goLoginBtn" type="button" class="link-btn">Login</button>
+              </p>
+            </div>
+          </div>
+
+          <!-- Main Contacts Screen -->
+          <div id="mainScreen" class="screen">
+            <div class="android-appbar">
+              <div>
+                <div class="appbar-title">MyContact</div>
+                <div id="activeUserLabel" class="appbar-sub">Signed in</div>
+              </div>
+              <button id="logoutBtn" type="button" class="icon-btn" title="Logout">Logout</button>
+            </div>
+
+            <div id="contactList" class="contact-list"></div>
+
+            <button id="addFab" type="button" class="fab" aria-label="Add Contact">+</button>
+          </div>
+
+          <!-- Android AlertDialog Overlay -->
+          <div id="dialogOverlay" class="dialog-overlay hidden" role="dialog" aria-modal="true">
+            <div class="dialog-card">
+              <h3 id="dialogTitle">Add Contact</h3>
+              <div id="dialogFormBody" class="dialog-body">
+                <label class="field">
+                  <span>Name</span>
+                  <input id="contactNameInput" type="text" placeholder="Full name" />
+                </label>
+                <label class="field">
+                  <span>Phone</span>
+                  <input id="contactPhoneInput" type="tel" placeholder="08xxxxxxxxxx" />
+                </label>
+              </div>
+              <p id="dialogConfirmText" class="dialog-confirm hidden"></p>
+              <div class="dialog-actions">
+                <button id="dialogCancelBtn" type="button" class="dialog-btn">Cancel</button>
+                <button id="dialogConfirmBtn" type="button" class="dialog-btn primary">Save</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Android Toast -->
+          <div id="toast" class="toast" aria-live="polite"></div>
+        </div>
+
+        <div class="phone-nav">
+          <span>◁</span>
+          <span>◯</span>
+          <span>▢</span>
+        </div>
+      </div>
+
+      <aside class="info-panel">
+        <h3>About This Preview</h3>
+        <p>
+          Simulasi web interaktif dari aplikasi Android <strong>Contacts-App</strong> (Kotlin + Room SQLite + SharedPreferences).
+        </p>
+        <ul>
+          <li><strong>Auth &amp; Session:</strong> Login &amp; Register tersimpan di <code>localStorage</code> (meniru <code>SessionManager.kt</code>).</li>
+          <li><strong>CRUD Kontak:</strong> Tambah, edit, dan hapus kontak secara real-time (meniru <code>AppDatabase</code> &amp; <code>ContactDao</code>).</li>
+          <li><strong>Validasi:</strong> Menyamakan validasi dan pesan Toast dari kode Kotlin aslinya.</li>
+        </ul>
+      </aside>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
